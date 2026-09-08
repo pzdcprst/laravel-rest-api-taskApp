@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Enums;
+
+enum Priority : string
+{
+    case low = 'low';
+    case medium = 'medium';
+    case high = 'high';
+
+    public static function values() : array
+    {
+        return array_column(self::cases(), 'value');
+    }
+}
