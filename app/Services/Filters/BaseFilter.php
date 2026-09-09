@@ -59,14 +59,6 @@ abstract class BaseFilter implements QueryFilterInterface
         return $query->orderBy($sortField, $direction);
     }
 
-    protected function applyPagination(Builder $query, Request $request, int $defaultPerPage = 15): \Illuminate\Contracts\Pagination\LengthAwarePaginator
-    {
-        $perPage = $request->query('per_page', $defaultPerPage);
-        $perPage = is_numeric($perPage) ? max(1, min((int) $perPage)) : $defaultPerPage;
-
-        return $query->paginate($perPage);
-    }
-
     protected function getStringFilterValue(Request $request, string $key): ?string
     {
         $value = $request->query($key);
