@@ -6,15 +6,28 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
+use App\Http\Resources\V1\Collections\TaskCollection;
+use App\Services\TaskQueryService;
+use App\Http\Resources\V1\TaskResource;
 
 class TaskController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Task::class, 'task');
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, TaskQueryService $queryService)
     {
-        //
+        $tasks = $queryService->apply($request);
+
+        return new TaskCollection($tasks);
     }
 
     /**
@@ -22,7 +35,11 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        //
+        $task = $request->user()
+            ->tasks()
+            ->create($request->validated());
+
+        return new TaskResource($task);
     }
 
     /**
@@ -30,7 +47,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        return new TaskResource($task);
     }
 
     /**
@@ -38,7 +55,9 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+        $task->update($request->validated());
+
+        return new TaskResource($task);
     }
 
     /**
@@ -46,7 +65,11 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+
+        return response()->json([
+            'message' => 'Task deleted successfully.'
+        ]);
     }
 
     public function updateStatus(UpdateTaskRequest $request, Task $task)
