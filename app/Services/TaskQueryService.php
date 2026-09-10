@@ -29,7 +29,8 @@ class TaskQueryService
     {
         $query = $request->user()
             ->tasks()
-            ->with('project');
+            ->with('project')
+            ->getQuery();
 
         foreach ($this->filters as $filter) {
             $query = $filter->apply($query, $request);

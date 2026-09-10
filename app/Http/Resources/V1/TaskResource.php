@@ -17,10 +17,10 @@ class TaskResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'status' => $this->status,
-            'priority' => $this->priority,
+            'title' => $this->title,
+            'description' => $this->description ?? 'No description provided',
+            'status' => $this->status ?? 'pending',
+            'priority' => $this->priority ?? 'medium',
             'due_date' => $this->due_date,
             'project' => new ProjectResource($this->whenLoaded('project')),
             'created_at' => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),

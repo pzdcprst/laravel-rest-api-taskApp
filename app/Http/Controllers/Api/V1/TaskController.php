@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\V1\Collections\TaskCollection;
+use App\Http\Resources\V1\TaskResource;
+use App\Models\Project;
 use App\Models\Task;
+use App\Services\TaskQueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
-use App\Http\Resources\V1\Collections\TaskCollection;
-use App\Services\TaskQueryService;
-use App\Http\Resources\V1\TaskResource;
 
 class TaskController extends Controller
 {
@@ -33,13 +34,14 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTaskRequest $request)
+    public function store(StoreTaskRequest $request, Project $project)
     {
-        $task = $request->user()
-            ->tasks()
-            ->create($request->validated());
+        $validated = $request->validated();
+        $validated['user_id'] = $request->user()->id;
 
-        return new TaskResource($task);
+        $task = $project->tasks()->create($validated);
+
+        return new TaskResource($task->load('project'));
     }
 
     /**

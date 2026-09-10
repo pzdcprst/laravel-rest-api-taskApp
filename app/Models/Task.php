@@ -10,11 +10,13 @@ use Override;
 class Task extends Model
 {
     protected $fillable = [
-        'name',
+        'title',
         'description',
         'status',
         'priority',
         'project_id',
+        'user_id',
+        'due_date',
     ];
     
     public function project()
