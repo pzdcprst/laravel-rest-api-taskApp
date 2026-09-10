@@ -18,7 +18,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('projects', ProjectController::class);
 
         Route::patch('tasks/{task}/status', [TaskController::class, 'updateStatus']);
-        Route::apiResource('projects.tasks', TaskController::class)->only(['store']);
+        Route::apiResource('projects/{project}/tasks', TaskController::class)->only(['store']);
         Route::apiResource('tasks', TaskController::class)->except(['store']);
         
         Route::get('auth/logout', [AuthController::class, 'logout']);
