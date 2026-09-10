@@ -13,13 +13,17 @@ use Illuminate\Http\Request;
 class TaskQueryService
 {
     public function __construct(
-        protected TaskSearchFilter $taskSearchFilter,
-        protected TaskProjectFilter $taskProjectFilter,
-        protected TaskStatusFilter $taskStatusFilter,
-        protected TaskPriorityFilter $taskPriorityFilter,
-        protected TaskDateRangeFilter $taskDateRangeFilter,
-        protected TaskSortFilter $taskSortFilter
-    ) {}
+        protected ?array $filters = null
+    ) {
+        $this->filters = $filters ?? [
+            new TaskSearchFilter(),
+            new TaskProjectFilter(),
+            new TaskStatusFilter(),
+            new TaskPriorityFilter(),
+            new TaskDateRangeFilter(),
+            new TaskSortFilter(),
+        ];
+    }
 
     public function apply(Request $request)
     {
@@ -27,12 +31,9 @@ class TaskQueryService
             ->tasks()
             ->with('project');
 
-        $query = $this->taskSearchFilter->apply($query, $request);
-        $query = $this->taskProjectFilter->apply($query, $request);
-        $query = $this->taskStatusFilter->apply($query, $request);
-        $query = $this->taskPriorityFilter->apply($query, $request);
-        $query = $this->taskDateRangeFilter->apply($query, $request);
-        $query = $this->taskSortFilter->apply($query, $request);
+        foreach ($this->filters as $filter) {
+            $query = $filter->apply($query, $request);
+        }
 
         $perPage = $request->query('per_page', 15);
         $perPage = is_numeric($perPage)

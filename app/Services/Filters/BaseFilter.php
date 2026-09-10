@@ -4,6 +4,7 @@ namespace App\Services\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 abstract class BaseFilter implements QueryFilterInterface
 {
@@ -11,13 +12,18 @@ abstract class BaseFilter implements QueryFilterInterface
 
     public function apply(Builder $query, Request $request): Builder
     {
-        foreach ($this->filters as $filter) {
-            if ($request->has($filter)) {
-                $method = 'filter' . ucfirst($filter);
-                if (method_exists($this, $method)) {
-                    $query = $this->$method($query, $request->query($filter));
-                }
+        foreach ($this->getFilters() as $filter) {
+            if (! $request->has($filter)) {
+                continue;
             }
+
+            $method = 'filter' . Str::studly($filter);
+
+            if (! method_exists($this, $method)) {
+                continue;
+            }
+
+            $query = $this->$method($query, $request);
         }
 
         return $query;
