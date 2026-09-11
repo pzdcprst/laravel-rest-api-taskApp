@@ -1,21 +1,26 @@
 <?php
 
-namespace App\Services\Filters\TaskFilters;
+namespace App\Services\Filters;
 
-use App\Services\Filters\BaseFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use App\Services\Filters\BaseFilter;
 
-class TaskSortFilter extends BaseFilter
+class SortFilter extends BaseFilter
 {
     protected $filters = ['sort'];
+    protected $allowedSortFields = [];
+
+    public function __construct(array $allowedSortFields)
+    {
+        $this->allowedSortFields = $allowedSortFields;
+    }
 
     protected function filterSort(Builder $query, Request $request): Builder
     {
-        $allowedSortFields = ['id', 'name', 'status', 'priority', 'due_date', 'created_at', 'updated_at'];
         $sortField = $this->getStringFilterValue($request, 'sort');
 
-        if ($sortField === null || $sortField === '' || ! in_array($sortField, $allowedSortFields, true)) {
+        if ($sortField === null || $sortField === '' || ! in_array($sortField, $this->allowedSortFields, true)) {
             return $query;
         }
 
