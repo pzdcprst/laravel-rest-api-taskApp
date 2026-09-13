@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Status;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use App\Enums\Status;
 
 class UpdateStatusRequest extends FormRequest
 {
@@ -25,7 +25,7 @@ class UpdateStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => ['required','string', Rule::in(Status::values())],
+            'status' => ['required', 'string', Rule::in(Status::values())],
         ];
     }
 }

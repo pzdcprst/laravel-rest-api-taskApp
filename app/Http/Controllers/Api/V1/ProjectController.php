@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
-use App\Models\Project;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\Request;
 use App\Http\Resources\V1\Collections\ProjectCollection;
 use App\Http\Resources\V1\ProjectResource;
+use App\Models\Project;
 use App\Services\ProjectQueryService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
@@ -27,7 +27,7 @@ class ProjectController extends Controller
     public function index(Request $request, ProjectQueryService $queryService)
     {
         $projects = $queryService->apply($request);
-        
+
         return new ProjectCollection($projects);
     }
 

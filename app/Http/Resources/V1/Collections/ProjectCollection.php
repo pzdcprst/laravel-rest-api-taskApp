@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources\V1\Collections;
 
+use App\Http\Resources\V1\ProjectResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Http\Resources\V1\ProjectResource;
 
 class ProjectCollection extends ResourceCollection
 {
@@ -13,7 +13,6 @@ class ProjectCollection extends ResourceCollection
      *
      * @return array<int|string, mixed>
      */
-
     public $collects = ProjectResource::class;
 
     public function toArray(Request $request): array

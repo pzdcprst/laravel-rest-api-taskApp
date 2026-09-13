@@ -17,7 +17,7 @@ abstract class BaseFilter implements QueryFilterInterface
                 continue;
             }
 
-            $method = 'filter' . Str::studly($filter);
+            $method = 'filter'.Str::studly($filter);
 
             if (! method_exists($this, $method)) {
                 continue;
@@ -46,22 +46,24 @@ abstract class BaseFilter implements QueryFilterInterface
     protected function normalizeDirection(Request $request, string $default = 'asc'): string
     {
         $direction = strtolower((string) $request->query('direction', $default));
+
         return in_array($direction, ['asc', 'desc'], true) ? $direction : $default;
     }
 
     protected function applySort(Builder $query, Request $request, array $allowedSortFields): Builder
     {
-        if (!$request->has('sort')) {
+        if (! $request->has('sort')) {
             return $query;
         }
 
         $sortField = $request->query('sort');
 
-        if (!in_array($sortField, $allowedSortFields, true)) {
+        if (! in_array($sortField, $allowedSortFields, true)) {
             return $query;
         }
 
         $direction = $this->normalizeDirection($request);
+
         return $query->orderBy($sortField, $direction);
     }
 

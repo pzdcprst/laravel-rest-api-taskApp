@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateDueDateRequest;
+use App\Http\Requests\UpdateStatusRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\V1\Collections\TaskCollection;
 use App\Http\Resources\V1\TaskResource;
@@ -12,8 +14,6 @@ use App\Models\Task;
 use App\Services\TaskQueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
-use App\Http\Requests\UpdateStatusRequest;
-use App\Http\Requests\UpdateDueDateRequest;
 
 class TaskController extends Controller
 {
@@ -23,6 +23,7 @@ class TaskController extends Controller
     {
         $this->authorizeResource(Task::class, 'task');
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -72,7 +73,7 @@ class TaskController extends Controller
         $task->delete();
 
         return response()->json([
-            'message' => 'Task deleted successfully.'
+            'message' => 'Task deleted successfully.',
         ]);
     }
 
@@ -81,7 +82,7 @@ class TaskController extends Controller
         $task->update($request->validated());
 
         return response()->json([
-            'message' => 'Task status updated successfully.'
+            'message' => 'Task status updated successfully.',
         ]);
     }
 
@@ -90,7 +91,7 @@ class TaskController extends Controller
         $task->update($request->validated());
 
         return response()->json([
-            'message' => 'Task due date updated successfully.'
+            'message' => 'Task due date updated successfully.',
         ]);
     }
 }

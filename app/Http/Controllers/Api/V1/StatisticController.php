@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Services\StatisticService;
+use Illuminate\Http\Request;
 
 class StatisticController extends Controller
 {
@@ -12,7 +12,7 @@ class StatisticController extends Controller
 
     public function __construct()
     {
-        $this->statisticService = new StatisticService();
+        $this->statisticService = new StatisticService;
     }
 
     public function statistics(Request $request)

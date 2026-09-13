@@ -2,9 +2,9 @@
 
 namespace App\Services\Filters\TaskFilters;
 
+use App\Services\Filters\EqualityFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use App\Services\Filters\EqualityFilter;
 
 class TaskProjectFilter extends EqualityFilter
 {

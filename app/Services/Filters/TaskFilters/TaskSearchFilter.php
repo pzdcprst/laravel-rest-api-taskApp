@@ -2,9 +2,9 @@
 
 namespace App\Services\Filters\TaskFilters;
 
+use App\Services\Filters\BaseFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use App\Services\Filters\BaseFilter;
 
 class TaskSearchFilter extends BaseFilter
 {
@@ -16,13 +16,13 @@ class TaskSearchFilter extends BaseFilter
     {
         $search = $this->getStringFilterValue($request, 'search');
 
-        if($search === null || $search === '') {
+        if ($search === null || $search === '') {
             return $query;
         }
 
         return $query->where(function ($q) use ($search) {
             $q->where('title', 'like', "%{$search}%")
-              ->orWhere('description', 'like', "%{$search}%");
+                ->orWhere('description', 'like', "%{$search}%");
         });
     }
 }

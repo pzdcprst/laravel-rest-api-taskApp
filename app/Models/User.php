@@ -23,7 +23,6 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    
     public function projects()
     {
         return $this->hasMany(Project::class);
@@ -44,7 +43,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    
+
     protected function casts(): array
     {
         return [

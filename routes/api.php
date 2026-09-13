@@ -1,11 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ProjectController;
+use App\Http\Controllers\Api\V1\StatisticController;
 use App\Http\Controllers\Api\V1\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\AuthController;
-use App\Http\Controllers\Api\V1\StatisticController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -23,7 +23,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('projects/{project}/tasks', TaskController::class)->only(['store']);
         Route::apiResource('tasks', TaskController::class)->except(['store']);
         Route::get('statistics/tasks', [StatisticController::class, 'statistics']);
-        
+
         Route::get('auth/logout', [AuthController::class, 'logout']);
         Route::get('auth/me', [AuthController::class, 'me']);
     });

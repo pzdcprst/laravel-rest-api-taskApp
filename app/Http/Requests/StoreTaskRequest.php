@@ -29,8 +29,8 @@ class StoreTaskRequest extends FormRequest
             'title' => ['string', 'required', 'min:3', 'max: 150'],
             'description' => ['string', 'max:5000'],
             'due_date' => ['date'],
-            //'user_id' => ['required', 'exists:user,id'],
-            //'project_id' => ['required', 'exists:project,id'],
+            // 'user_id' => ['required', 'exists:user,id'],
+            // 'project_id' => ['required', 'exists:project,id'],
             'status' => ['string', Rule::in(Status::values())],
             'priority' => ['string', Rule::in(Priority::values())],
         ];

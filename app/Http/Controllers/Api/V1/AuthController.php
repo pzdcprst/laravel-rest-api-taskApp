@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\User;
-use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\LoginUserRequest;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\V1\UserResource;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -19,7 +19,7 @@ class AuthController extends Controller
 
     public function login(LoginUserRequest $request)
     {
-        if(!Auth::attempt($request->only('email', 'password'))){
+        if (! Auth::attempt($request->only('email', 'password'))) {
             return response()->json(['message' => '"Неверный email или пароль'], 401);
         }
 

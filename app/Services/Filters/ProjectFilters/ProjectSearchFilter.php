@@ -2,9 +2,9 @@
 
 namespace App\Services\Filters\ProjectFilters;
 
+use App\Services\Filters\BaseFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use App\Services\Filters\BaseFilter;
 
 class ProjectSearchFilter extends BaseFilter
 {
@@ -12,7 +12,7 @@ class ProjectSearchFilter extends BaseFilter
         'name',
     ];
 
-    public function apply(Builder $query, Request $request) : Builder
+    public function apply(Builder $query, Request $request): Builder
     {
         $name = $this->getStringFilterValue($request, 'name');
 

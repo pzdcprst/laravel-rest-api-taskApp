@@ -28,10 +28,10 @@ class StatisticService
     private function checkOverdueTasks(User $user)
     {
         return $user->tasks()
-                    ->whereNotNull('due_date')
-                    ->where('due_date', '<', now())
-                    ->whereNotIn('status', ['completed', 'canceled'])
-                    ->count();
+            ->whereNotNull('due_date')
+            ->where('due_date', '<', now())
+            ->whereNotIn('status', ['completed', 'canceled'])
+            ->count();
     }
 
     public function getStatistics(User $user)

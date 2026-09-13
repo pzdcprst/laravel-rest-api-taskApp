@@ -4,11 +4,11 @@ namespace App\Services\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use App\Services\Filters\BaseFilter;
 
 class SortFilter extends BaseFilter
 {
     protected $filters = ['sort'];
+
     protected $allowedSortFields = [];
 
     public function __construct(array $allowedSortFields)

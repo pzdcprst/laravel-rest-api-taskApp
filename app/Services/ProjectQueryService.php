@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
 use App\Services\Filters\ProjectFilters\ProjectSearchFilter;
 use App\Services\Filters\SortFilter;
+use Illuminate\Http\Request;
 
 class ProjectQueryService
 {
@@ -12,15 +12,16 @@ class ProjectQueryService
         protected ?array $filters = null
     ) {
         $this->filters = $filters ?? [
-            new ProjectSearchFilter(),
+            new ProjectSearchFilter,
             new SortFilter([
-                'id', 
-                'name', 
-                'created_at', 
+                'id',
+                'name',
+                'created_at',
                 'updated_at',
             ]),
         ];
     }
+
     public function apply(Request $request)
     {
         $query = $request->user()
