@@ -19,6 +19,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('projects', ProjectController::class);
 
         Route::patch('tasks/{task}/status', [TaskController::class, 'updateStatus']);
+        Route::patch('tasks/{task}/due_date', [TaskController::class, 'setDueDate']);
         Route::apiResource('projects/{project}/tasks', TaskController::class)->only(['store']);
         Route::apiResource('tasks', TaskController::class)->except(['store']);
         Route::get('statistics/tasks', [StatisticController::class, 'statistics']);

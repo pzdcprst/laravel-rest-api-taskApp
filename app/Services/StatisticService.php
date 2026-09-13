@@ -6,28 +6,41 @@ use App\Models\User;
 
 class StatisticService
 {
+    private function statusStatistics(User $user)
+    {
+        return [
+            'completed' => $user->tasks()->where('status', 'completed')->count(),
+            'pending' => $user->tasks()->where('status', 'pending')->count(),
+            'in_progress' => $user->tasks()->where('status', 'in_progress')->count(),
+            'canceled' => $user->tasks()->where('status', 'canceled')->count(),
+        ];
+    }
+
+    private function priorityStatistics(User $user)
+    {
+        return [
+            'low' => $user->tasks()->where('priority', 'low')->count(),
+            'medium' => $user->tasks()->where('priority', 'medium')->count(),
+            'high' => $user->tasks()->where('priority', 'high')->count(),
+        ];
+    }
+
+    private function checkOverdueTasks(User $user)
+    {
+        return $user->tasks()
+                    ->whereNotNull('due_date')
+                    ->where('due_date', '<', now())
+                    ->whereNotIn('status', ['completed', 'canceled'])
+                    ->count();
+    }
+
     public function getStatistics(User $user)
     {
-        $totalTasks = $user->tasks()->count();
-
-        $completedTasks = $user->tasks()->where('status', 'completed')->count();
-        $pendingTasks = $user->tasks()->where('status', 'pending')->count();
-        $inProgressTasks = $user->tasks()->where('status', 'in_progress')->count();
-        $canceledTasks = $user->tasks()->where('status', 'canceled')->count();
-        
-        $lowPriorityTasks = $user->tasks()->where('priority', 'low')->count();
-        $mediumPriorityTasks = $user->tasks()->where('priority', 'medium')->count();
-        $highPriorityTasks = $user->tasks()->where('priority', 'high')->count();
-
         return [
-            'total_tasks' => $totalTasks,
-            'completed_tasks' => $completedTasks,
-            'pending_tasks' => $pendingTasks,
-            'in_progress_tasks' => $inProgressTasks,
-            'canceled_tasks' => $canceledTasks,
-            'low_priority_tasks' => $lowPriorityTasks,
-            'medium_priority_tasks' => $mediumPriorityTasks,
-            'high_priority_tasks' => $highPriorityTasks,
+            'total' => $user->tasks()->count(),
+            'by_status' => $this->statusStatistics($user),
+            'by_priority' => $this->priorityStatistics($user),
+            'overdue' => $this->checkOverdueTasks($user),
         ];
     }
 }

@@ -13,6 +13,7 @@ use App\Services\TaskQueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateStatusRequest;
+use App\Http\Requests\UpdateDueDateRequest;
 
 class TaskController extends Controller
 {
@@ -81,6 +82,15 @@ class TaskController extends Controller
 
         return response()->json([
             'message' => 'Task status updated successfully.'
+        ]);
+    }
+
+    public function setDueDate(UpdateDueDateRequest $request, Task $task)
+    {
+        $task->update($request->validated());
+
+        return response()->json([
+            'message' => 'Task due date updated successfully.'
         ]);
     }
 }
