@@ -6,9 +6,8 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Enums\Status;
-use App\Enums\Priority;
 
-class UpdateTaskRequest extends FormRequest
+class UpdateStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,11 +25,7 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['string', 'required', 'min:3', 'max: 150'],
-            'description' => ['string', 'max:5000'],
-            'due_date' => ['date'],
-            'status' => ['string', Rule::in(Status::values())],
-            'priority' => ['string', Rule::in(Priority::values())],
+            'status' => ['required','string', Rule::in(Status::values())],
         ];
     }
 }

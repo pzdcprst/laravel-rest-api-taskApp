@@ -12,6 +12,7 @@ use App\Models\Task;
 use App\Services\TaskQueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateStatusRequest;
 
 class TaskController extends Controller
 {
@@ -74,7 +75,7 @@ class TaskController extends Controller
         ]);
     }
 
-    public function updateStatus(UpdateTaskRequest $request, Task $task)
+    public function updateStatus(UpdateStatusRequest $request, Task $task)
     {
         $task->update($request->validated());
 
