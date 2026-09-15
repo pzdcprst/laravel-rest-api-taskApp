@@ -14,6 +14,10 @@ use App\Models\Task;
 use App\Services\TaskQueryService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use App\Enums\Status;
+use App\Exceptions\TaskExceptions\InvalidTaskStatusTransitionException;
+use App\Exceptions\TaskExceptions\TaskAlreadyCompletedException;
+use App\Exceptions\TaskExceptions\TaskCannotBeCancelledException;
 
 class TaskController extends Controller
 {
@@ -79,7 +83,21 @@ class TaskController extends Controller
 
     public function updateStatus(UpdateStatusRequest $request, Task $task)
     {
-        $task->update($request->validated());
+        $newStatus = $request->validated()['status'];
+
+        if ($task->status === Status::completed && $newStatus !== Status::completed->value) {
+            throw new TaskAlreadyCompletedException();
+        }
+
+        if ($newStatus === Status::cancelled->value && $task->status === Status::completed) {
+            throw new TaskCannotBeCancelledException();
+        }
+
+        if($newStatus === Status::pending->value && $task->status === Status::completed) {
+            throw new InvalidTaskStatusTransitionException(Status::pending->value, Status::completed->value);
+        }
+
+        $task->update(['status' => $newStatus]);
 
         return response()->json([
             'message' => 'Task status updated successfully.',
