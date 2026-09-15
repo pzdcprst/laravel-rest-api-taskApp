@@ -7,6 +7,7 @@ use App\Enums\Status;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -29,8 +30,8 @@ class UpdateTaskRequest extends FormRequest
             'title' => ['string', 'required', 'min:3', 'max: 150'],
             'description' => ['string', 'max:5000'],
             'due_date' => ['date'],
-            'status' => ['string', Rule::in(Status::values())],
-            'priority' => ['string', Rule::in(Priority::values())],
+            'status' => ['string', new Enum(Status::class)],
+            'priority' => ['string', new Enum(Priority::class)],
         ];
     }
 }

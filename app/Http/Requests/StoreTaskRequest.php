@@ -7,6 +7,7 @@ use App\Enums\Status;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreTaskRequest extends FormRequest
 {
@@ -31,8 +32,8 @@ class StoreTaskRequest extends FormRequest
             'due_date' => ['date'],
             // 'user_id' => ['required', 'exists:user,id'],
             // 'project_id' => ['required', 'exists:project,id'],
-            'status' => ['string', Rule::in(Status::values())],
-            'priority' => ['string', Rule::in(Priority::values())],
+            'status' => ['string', new Enum(Status::class)],
+            'priority' => ['string', new Enum(Priority::class)],
         ];
     }
 }

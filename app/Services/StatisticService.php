@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Enums\Status;
+use App\Enums\Priority;
+use Illuminate\Validation\Rules\Enum;
 
 class StatisticService
 {

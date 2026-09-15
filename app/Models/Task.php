@@ -28,8 +28,8 @@ class Task extends Model
     protected function casts(): array
     {
         return [
-            'status' => Status::class,
-            'priority' => Priority::class,
+            // 'status' => Status::class,
+            // 'priority' => Priority::class,
         ];
     }
 }

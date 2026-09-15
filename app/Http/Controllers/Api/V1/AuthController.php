@@ -41,10 +41,10 @@ class AuthController extends Controller
         ]);
     }
 
-    public function me()
+    public function me(Request $request)
     {
         return response()->json([
-            'user' => new UserResource(Auth::user()),
+            'user' => new UserResource($request->user()),
         ]);
     }
 }
