@@ -5,6 +5,9 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Exceptions\TaskExceptions\TaskAlreadyCompletedException;
+use App\Exceptions\TaskExceptions\TaskCannotBeCancelledException;
+use App\Exceptions\TaskExceptions\InvalidTaskStatusTransitionException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -26,6 +29,19 @@ return Application::configure(basePath: dirname(__DIR__))
                     'message' => 'Not found',
                 ], 404);
             }
+        });
+
+        $exceptions->render(function (
+            TaskAlreadyCompletedException|TaskCannotBeCancelledException|InvalidTaskStatusTransitionException $exception,
+            Request $request
+        ) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json([
+                    'message' => $exception->getMessage(),
+                ], $exception->getCode() ?: 409);
+            }
+
+            return null;
         });
 
         $exceptions->shouldRenderJsonWhen(
