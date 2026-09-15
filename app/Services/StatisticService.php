@@ -6,22 +6,36 @@ use App\Models\User;
 
 class StatisticService
 {
-    private function statusStatistics(User $user)
+    private function groupByRequest(User $user, string $column)
     {
+        return $user->tasks()
+            ->selectRaw("$column, COUNT(*) as count")
+            ->groupBy($column)
+            ->get()
+            ->pluck('count', $column)
+            ->toArray();
+    }
+    
+    private function statusStatistics(User $user, string $column = 'status')
+    {
+        $countByStatus = $this->groupByRequest($user, $column);
+
         return [
-            'completed' => $user->tasks()->where('status', 'completed')->count(),
-            'pending' => $user->tasks()->where('status', 'pending')->count(),
-            'in_progress' => $user->tasks()->where('status', 'in_progress')->count(),
-            'canceled' => $user->tasks()->where('status', 'canceled')->count(),
+            'pending' => $countByStatus['pending'] ?? 0,
+            'in_progress' => $countByStatus['in_progress'] ?? 0,
+            'completed' => $countByStatus['completed'] ?? 0,
+            'canceled' => $countByStatus['canceled'] ?? 0,
         ];
     }
 
-    private function priorityStatistics(User $user)
+    private function priorityStatistics(User $user, string $column = 'priority')
     {
+        $countByPriority = $this->groupByRequest($user, $column);
+
         return [
-            'low' => $user->tasks()->where('priority', 'low')->count(),
-            'medium' => $user->tasks()->where('priority', 'medium')->count(),
-            'high' => $user->tasks()->where('priority', 'high')->count(),
+            'low' => $countByPriority['low'] ?? 0,
+            'medium' => $countByPriority['medium'] ?? 0,
+            'high' => $countByPriority['high'] ?? 0,
         ];
     }
 
