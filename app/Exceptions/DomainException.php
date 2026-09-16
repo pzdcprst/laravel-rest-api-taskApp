@@ -8,9 +8,9 @@ class DomainException extends Exception
 {
     public function __construct(
         string $message, 
-        protected int $status = 422, 
+        protected int $status = 400, 
         protected string $errorCode = 'domain_error',
-        protected array $details = [],
+        protected array $errors = [],
         ?\Throwable $previous = null)
     {
         parent::__construct($message, 0, $previous);;
@@ -26,8 +26,9 @@ class DomainException extends Exception
         return $this->errorCode;
     }
 
-    public function getDetails(): array
+    public function getErrors(): array
     {
-        return $this->details;
+        return $this->errors;
     }
+
 }

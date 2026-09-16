@@ -1,5 +1,7 @@
 <?php
 
+use App\Exceptions\DueDateException\InvalidDueDateException;
+use App\Exceptions\DueDateException\TaskDeadLineLockedException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -32,12 +34,17 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (
-            TaskAlreadyCompletedException|TaskCannotBeCancelledException|InvalidTaskStatusTransitionException $exception,
+            TaskAlreadyCompletedException|
+            TaskCannotBeCancelledException|
+            InvalidTaskStatusTransitionException|
+            InvalidDueDateException|
+            TaskDeadLineLockedException $exception,
             Request $request
         ) {
             if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json([
                     'message' => $exception->getMessage(),
+                    //'errors' => $exception->getErrors(),
                 ], $exception->getCode() ?: 409);
             }
 
