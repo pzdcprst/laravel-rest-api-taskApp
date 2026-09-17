@@ -7,6 +7,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Override;
 
 class UpdateStatusRequest extends FormRequest
 {
@@ -27,6 +28,17 @@ class UpdateStatusRequest extends FormRequest
     {
         return [
             'status' => ['required', 'string', new Enum(Status::class)],
+        ];
+    }
+
+    // TODO: add custom messages for validation errors
+    #[Override]
+    public function messages()
+    {
+        return [
+            'status.required' => 'The status field is required.',
+            'status.string' => 'The status must be a string.',
+            'status.enum' => 'Incorrect status format',
         ];
     }
 }
