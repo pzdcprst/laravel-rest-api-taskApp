@@ -7,13 +7,13 @@ use Exception;
 class DomainException extends Exception
 {
     public function __construct(
-        string $message, 
-        protected int $status = 400, 
+        string $message,
+        protected int $status = 400,
         protected string $errorCode = 'domain_error',
         protected array $errors = [],
         ?\Throwable $previous = null)
     {
-        parent::__construct($message, 0, $previous);;
+        parent::__construct($message, 0, $previous);
     }
 
     public function getStatus(): int
@@ -30,5 +30,4 @@ class DomainException extends Exception
     {
         return $this->errors;
     }
-
 }

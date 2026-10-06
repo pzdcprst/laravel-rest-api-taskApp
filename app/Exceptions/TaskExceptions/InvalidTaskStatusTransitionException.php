@@ -3,7 +3,6 @@
 namespace App\Exceptions\TaskExceptions;
 
 use App\Exceptions\DomainException;
-use Exception;
 
 class InvalidTaskStatusTransitionException extends DomainException
 {

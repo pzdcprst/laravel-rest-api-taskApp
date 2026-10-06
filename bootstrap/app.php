@@ -2,18 +2,18 @@
 
 use App\Exceptions\DueDateException\InvalidDueDateException;
 use App\Exceptions\DueDateException\TaskDeadLineLockedException;
+use App\Exceptions\TaskExceptions\InvalidTaskStatusTransitionException;
+use App\Exceptions\TaskExceptions\TaskAlreadyCompletedException;
+use App\Exceptions\TaskExceptions\TaskCannotBeCancelledException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Exceptions\TaskExceptions\TaskAlreadyCompletedException;
-use App\Exceptions\TaskExceptions\TaskCannotBeCancelledException;
-use App\Exceptions\TaskExceptions\InvalidTaskStatusTransitionException;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\AuthenticationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -48,7 +48,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json([
                     'message' => $exception->getMessage(),
-                    //'errors' => $exception->getErrors(),
+                    // 'errors' => $exception->getErrors(),
                 ], $exception->getCode() ?: 409);
             }
 
@@ -67,19 +67,19 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (AuthorizationException $exception) {
             return response()->json([
-                'message' => $exception->getMessage() ?: "Forbbiden",
+                'message' => $exception->getMessage() ?: 'Forbbiden',
             ], 403);
         });
 
         $exceptions->render(function (AuthenticationException $exception) {
             return response()->json([
-                'message' => "Unauthorized",
+                'message' => 'Unauthorized',
             ], 401);
         });
 
         $exceptions->render(function (ValidationException $exception) {
             return response()->json([
-                'message' => "Validation failed",
+                'message' => 'Validation failed',
                 'errors' => $exception->errors(),
             ], 422);
         });

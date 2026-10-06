@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Task;
-use Illuminate\Support\Facades\Date;
 use App\Enums\Status;
 use App\Exceptions\DueDateException\InvalidDueDateException;
 use App\Exceptions\TaskExceptions\TaskAlreadyCompletedException;
+use App\Models\Task;
 use Carbon\Carbon;
 
 class TaskDueDateService
@@ -14,11 +13,11 @@ class TaskDueDateService
     public function updateDueDate(Task $task, Carbon $dueDate): Task
     {
         if ($task->status === Status::completed->value) {
-            throw new TaskAlreadyCompletedException();
+            throw new TaskAlreadyCompletedException;
         }
 
         if ($dueDate->startOfDay()->lt(Carbon::today())) {
-            throw new InvalidDueDateException();
+            throw new InvalidDueDateException;
         }
 
         $task->update([

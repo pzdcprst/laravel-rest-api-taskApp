@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Task;
 use App\Enums\Status;
-use App\Exceptions\TaskExceptions\TaskCannotBeCancelledException;
-use App\Exceptions\TaskExceptions\TaskAlreadyCompletedException;
 use App\Exceptions\TaskExceptions\InvalidTaskStatusTransitionException;
+use App\Exceptions\TaskExceptions\TaskAlreadyCompletedException;
+use App\Exceptions\TaskExceptions\TaskCannotBeCancelledException;
+use App\Models\Task;
 
 class TaskStatusService
 {
@@ -15,11 +15,11 @@ class TaskStatusService
         $current = $task->status?->value ?? $task->status;
 
         if ($current === Status::completed->value && $newStatus !== Status::completed->value) {
-            throw new TaskAlreadyCompletedException();
+            throw new TaskAlreadyCompletedException;
         }
 
         if ($newStatus === Status::cancelled->value && $current === Status::completed->value) {
-            throw new TaskCannotBeCancelledException();
+            throw new TaskCannotBeCancelledException;
         }
 
         if ($newStatus === Status::pending->value && $current === Status::completed->value) {

@@ -13,10 +13,10 @@ use App\Models\Project;
 use App\Models\Task;
 use App\Services\TaskDueDateService;
 use App\Services\TaskQueryService;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\Request;
 use App\Services\TaskStatusService;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -25,8 +25,7 @@ class TaskController extends Controller
     public function __construct(
         private readonly TaskStatusService $taskStatusService,
         private readonly TaskDueDateService $taskDueDateService,
-    )
-    {
+    ) {
         $this->authorizeResource(Task::class, 'task');
     }
 
@@ -98,7 +97,7 @@ class TaskController extends Controller
     public function setDueDate(UpdateDueDateRequest $request, Task $task)
     {
         $dueDate = Carbon::parse($request->validated()['due_date']);
-    
+
         $this->taskDueDateService->updateDueDate($task, $dueDate);
 
         return response()->json([

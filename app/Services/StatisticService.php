@@ -3,9 +3,6 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Enums\Status;
-use App\Enums\Priority;
-use Illuminate\Validation\Rules\Enum;
 
 class StatisticService
 {
@@ -18,7 +15,7 @@ class StatisticService
             ->pluck('count', $column)
             ->toArray();
     }
-    
+
     private function statusStatistics(User $user, string $column = 'status')
     {
         $countByStatus = $this->groupByRequest($user, $column);
