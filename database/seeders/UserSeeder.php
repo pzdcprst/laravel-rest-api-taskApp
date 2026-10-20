@@ -9,6 +9,15 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::factory()->count(5)->create();
+        $testPassword = 'test_password';
+
+        $users = User::factory()->count(5)->create([
+            'password' => bcrypt($testPassword), 
+        ]);
+
+        $users->each(function ($user) use ($testPassword) {
+            $token = $user->createToken("{$user->name} token")->plainTextToken;
+            $this->command->line("Email: <info>{$user->email}</info> | Pass: <info>{$testPassword}</info> | Token: <comment>{$token}</comment>");
+        });
     }
 }
