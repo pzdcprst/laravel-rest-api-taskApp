@@ -6,6 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+// TODO: внести изменения - добавить поле для назначения пользователя задаче
+
 return new class extends Migration
 {
     /**

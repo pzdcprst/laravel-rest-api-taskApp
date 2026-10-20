@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+// TODO: описать назначение задачи пользователю 
+
 class Task extends Model
 {
     use HasFactory;

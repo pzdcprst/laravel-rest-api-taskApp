@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Task;
 use App\Models\User;
+use App\Enums\Role;
 
 class TaskPolicy
 {
@@ -20,7 +21,7 @@ class TaskPolicy
      */
     public function view(User $user, Task $task): bool
     {
-        return $user->id === $task->project->user_id;
+        return ($user->id === $task->project->user_id) or ($user->role === Role::admin->value);
     }
 
     /**
@@ -36,7 +37,7 @@ class TaskPolicy
      */
     public function update(User $user, Task $task): bool
     {
-        return $user->id === $task->project->user_id;
+        return ($user->id === $task->project->user_id) or ($user->role === Role::admin->value);
     }
 
     /**
@@ -44,6 +45,6 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task): bool
     {
-        return $user->id === $task->project->user_id;
+        return ($user->id === $task->project->user_id) or ($user->role === Role::admin->value);
     }
 }
